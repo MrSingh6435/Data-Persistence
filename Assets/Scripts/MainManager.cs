@@ -13,24 +13,21 @@ public class MainManager : MonoBehaviour
     public Text ScoreText;
     public Text BestScore;
     public GameObject GameOverText;
-
+    
     private bool m_Started = false;
     private int m_Points;
-
+    
     private bool m_GameOver = false;
+    private string playerName;
 
-    public static MainManager Instance;
-
-    public string playerName; // Store the player name here
-
-
+    
     // Start is called before the first frame update
     void Start()
     {
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
-
-        int[] pointCountArray = new[] { 1, 1, 2, 2, 5, 5 };
+        
+        int[] pointCountArray = new [] {1,1,2,2,5,5};
         for (int i = 0; i < LineCount; ++i)
         {
             for (int x = 0; x < perLine; ++x)
@@ -41,12 +38,7 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
-
-        // Retrieve player name from PlayerPrefs (Set during the start menu)
         playerName = PlayerPrefs.GetString("PlayerName", "Player");
-
-        // Optionally display player name as a label (if required)
-        // ScoreText.text = $"Player: {playerName}";
     }
 
     private void Update()
@@ -73,34 +65,16 @@ public class MainManager : MonoBehaviour
         }
     }
 
-    // Show Score
     void AddPoint(int point)
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
     }
 
-    // Game Over Screen
     public void GameOver()
     {
-        // Use playerName for displaying score along with player name
-        BestScore.text = $"Best Score : {playerName} : {m_Points}";
         m_GameOver = true;
+        BestScore.text = $"Best Score : {playerName} : {m_Points}";
         GameOverText.SetActive(true);
-    }
-
-    // Awake function to ensure only one instance of MainManager exists
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Debug.LogWarning("Destroying duplicate MainManager instance.");
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-        Debug.Log("MainManager Instance set in Awake.");
     }
 }
