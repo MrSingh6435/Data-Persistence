@@ -778,6 +778,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameInputField: {fileID: 1174263112}
+  BestScoreText: {fileID: 835408129}
 --- !u!1 &976433026
 GameObject:
   m_ObjectHideFlags: 0

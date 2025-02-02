@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
 
 public class MainManager : MonoBehaviour
 {
@@ -13,21 +14,21 @@ public class MainManager : MonoBehaviour
     public Text ScoreText;
     public Text BestScore;
     public GameObject GameOverText;
-    
+
     private bool m_Started = false;
     private int m_Points;
-    
-    private bool m_GameOver = false;
-    private string playerName;
 
-    
-    // Start is called before the first frame update
-    void Start()
+    private bool m_GameOver = false;
+    private string currentPlayerName;
+    private int bestScore;
+    private string bestPlayerName;
+
+    private void Start()
     {
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
-        
-        int[] pointCountArray = new [] {1,1,2,2,5,5};
+
+        int[] pointCountArray = new[] { 1, 1, 2, 2, 5, 5 };
         for (int i = 0; i < LineCount; ++i)
         {
             for (int x = 0; x < perLine; ++x)
@@ -38,11 +39,39 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
-        playerName = PlayerPrefs.GetString("PlayerName", "Player");
+
+        currentPlayerName = PlayerPrefs.GetString("PlayerName", "Player");
+        LoadPlayerData();
+        UpdateBestScoreUI();
     }
 
+    void DeleteJson()
+    {
+        string filePath = Application.persistentDataPath + "/savefile.json";
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+            Debug.Log("File deleted successfully.");
+        }
+        else
+        {
+            Debug.Log("File not found.");
+        }
+    }
+    void Exit(){
+        SceneManager.LoadScene(0);
+    }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            DeleteJson();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape)){
+            Exit();
+        }
+
         if (!m_Started)
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -68,13 +97,63 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $"Score : {currentPlayerName} : {m_Points}";
     }
 
     public void GameOver()
     {
         m_GameOver = true;
-        BestScore.text = $"Best Score : {playerName} : {m_Points}";
         GameOverText.SetActive(true);
+
+        if (m_Points > bestScore)
+        {
+            bestScore = m_Points;
+            bestPlayerName = currentPlayerName;
+            SavePlayerData();
+        }
+
+        UpdateBestScoreUI();
+    }
+
+    private void UpdateBestScoreUI()
+    {
+        BestScore.text = $"Best Score: {bestPlayerName} : {bestScore}";
+    }
+
+    [System.Serializable]
+    public class SaveData
+    {
+        public string playerName;
+        public int bestScore;
+    }
+
+    public void SavePlayerData()
+    {
+        SaveData data = new SaveData
+        {
+            playerName = bestPlayerName,
+            bestScore = bestScore
+        };
+
+        string json = JsonUtility.ToJson(data);
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+    }
+
+    public void LoadPlayerData()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+            bestPlayerName = data.playerName;
+            bestScore = data.bestScore;
+        }
+        else
+        {
+            bestPlayerName = "None";
+            bestScore = 0;
+        }
     }
 }
