@@ -65,8 +65,7 @@ Through this learning path, I implemented programming fundamentals and core Unit
 ---
 
 ## 📸 Project Preview
-
-> Replace these with your own images/GIFs inside a folder called **Screenshots**  
+  
 > (Example paths shown below)
 
 ### 🖼️ Screenshots
@@ -75,7 +74,7 @@ Through this learning path, I implemented programming fundamentals and core Unit
 
 <img width="1919" height="1079" alt="Image" src="https://github.com/user-attachments/assets/061fe0c9-75b9-4c11-b7c7-3913a1c11237" />
 
-### 🎞️ GIF Preview (if you want)
+### 🎞️ video Preview (if you want)
 
 [![Video Preview](Screenshots/video_thumbnail.png)](https://github.com/user-attachments/assets/031806cb-a827-432d-874c-922e077dff4c)
 
