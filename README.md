@@ -48,6 +48,12 @@ The player enters their name in the **Start Menu**, plays the game, and the **be
 - Building UI for player name + score display  
 
 ---
+# 🎮 Play game here
+
+[![Play Game](https://img.shields.io/badge/►%20Play%20Game-brightgreen?style=for-the-badge)](https://play.unity.com/en/games/537d4bf7-9b54-415a-9b5e-9f82d2dbae82/gl-build)
+
+
+---
 
 ## 📸 Demo Video
 
