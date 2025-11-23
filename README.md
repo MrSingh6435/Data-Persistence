@@ -51,7 +51,8 @@ The player enters their name in the **Start Menu**, plays the game, and the **be
 
 ## 📸 Demo Video
 
-!https://github.com/user-attachments/assets/ab32a679-0e82-46ca-a76a-2b3ea8e6f210
+<video src="https://github.com/user-attachments/assets/ab32a679-0e82-46ca-a76a-2b3ea8e6f210" controls width="600">
+</video>
 
 ---
 
